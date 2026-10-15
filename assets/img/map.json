@@ -1,0 +1,90 @@
+{
+ "azul": {
+  "img": [
+   "azul-1.webp",
+   "azul-2.webp",
+   "azul-3.webp",
+   "azul-4.webp"
+  ],
+  "tag": "azul-tag.webp"
+ },
+ "blanca": {
+  "img": [
+   "blanca-1.webp",
+   "blanca-2.webp",
+   "blanca-3.webp",
+   "blanca-4.webp"
+  ],
+  "tag": "blanca-tag.webp"
+ },
+ "gris": {
+  "img": [
+   "gris-1.webp",
+   "gris-2.webp",
+   "gris-3.webp",
+   "gris-4.webp",
+   "gris-5.webp",
+   "gris-6.webp",
+   "gris-7.webp"
+  ],
+  "tag": "gris-tag.webp"
+ },
+ "grisoscuro": {
+  "img": [
+   "grisoscuro-1.webp",
+   "grisoscuro-2.webp",
+   "grisoscuro-3.webp",
+   "grisoscuro-4.webp"
+  ],
+  "tag": "grisoscuro-tag.webp"
+ },
+ "grisoscuro2": {
+  "img": [
+   "grisoscuro2-1.webp",
+   "grisoscuro2-2.webp",
+   "grisoscuro2-3.webp",
+   "grisoscuro2-4.webp",
+   "grisoscuro2-5.webp",
+   "grisoscuro2-6.webp"
+  ],
+  "tag": null
+ },
+ "negro": {
+  "img": [
+   "negro-1.webp",
+   "negro-2.webp",
+   "negro-3.webp",
+   "negro-4.webp",
+   "negro-5.webp"
+  ],
+  "tag": "negro-tag.webp"
+ },
+ "rosa": {
+  "img": [
+   "rosa-1.webp",
+   "rosa-2.webp",
+   "rosa-3.webp",
+   "rosa-4.webp"
+  ],
+  "tag": "rosa-tag.webp"
+ },
+ "verdeagua": {
+  "img": [
+   "verdeagua-1.webp",
+   "verdeagua-2.webp",
+   "verdeagua-3.webp",
+   "verdeagua-4.webp",
+   "verdeagua-5.webp"
+  ],
+  "tag": "verdeagua-tag.webp"
+ },
+ "verdeblanco": {
+  "img": [
+   "verdeblanco-1.webp",
+   "verdeblanco-2.webp",
+   "verdeblanco-3.webp",
+   "verdeblanco-4.webp"
+  ],
+  "tag": "verdeblanco-tag.webp"
+ }
+}
