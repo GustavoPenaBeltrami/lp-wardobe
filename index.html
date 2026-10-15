@@ -93,6 +93,12 @@ body.ready .ft>*{opacity:1;transform:none;transition-delay:.4s}
 .sw:hover{transform:scale(1.25)}
 .sw.on{outline:2px solid var(--k);outline-offset:3px}
 .pf{display:flex;justify-content:space-between;align-items:center;margin-top:8px;padding-top:16px;border-top:1px solid var(--k)}
+.bh{position:absolute;top:0;left:0;right:0;height:64px;padding:0 20px;display:flex;justify-content:space-between;align-items:center}
+.bic{display:flex;gap:10px;align-items:center}
+.bic svg{width:20px;height:20px;stroke:var(--k);fill:none;stroke-width:1.6}
+#bx{width:40px;height:40px;margin-right:-10px;font-size:18px;display:grid;place-items:center;transition:transform .6s var(--o)}
+#bx:hover{transform:rotate(90deg)}
+body.bo #bagb{opacity:0;pointer-events:none}
 .bi{display:grid;grid-template-columns:64px 1fr auto;gap:14px;align-items:center;padding:12px 0;border-bottom:1px solid #e6e6e6;animation:bi .8s var(--o) both}
 .bi img{width:64px;height:64px;object-fit:contain}
 .bi small{display:block;color:#777}
@@ -167,6 +173,7 @@ body.fs .hd{opacity:0;pointer-events:none;transition:opacity .4s}
 #thumbs{left:20px;right:20px;top:auto;bottom:calc(58% + 6px);flex-direction:row;transform:none;justify-content:center;gap:12px}
 #thumbs img{width:34px;height:34px}
 #gc{width:100%;bottom:auto;top:calc(42% - 20px);display:none}
+body.bo .hd{opacity:0;pointer-events:none}
 .brand{display:none}
 #hint span{display:none}
 #tk{right:10px}
@@ -472,10 +479,11 @@ function bump(){const b=$('#bn');b.textContent=bag.length;b.classList.remove('bu
 function paintBag(){
   const items=bag.map(c=>P.find(p=>p.code===c));
   const total=items.reduce((s,p)=>s+p.price,0);
-  $('#bp').innerHTML=`<h4>Bolsa</h4>`+
+  $('#bp').innerHTML=`<div class="bh"><span class="bic"><svg viewBox="0 0 24 24"><path d="M5 8h14l-1 12H6zM9 8V6a3 3 0 0 1 6 0v2"/></svg><b>${bag.length}</b></span><button id="bx" aria-label="Cerrar">✕</button></div><h4>Bolsa</h4>`+
     (items.length?items.map((p,i)=>`<div class="bi" style="animation-delay:${i*80}ms"><img src="${src(p.imgs[0])}" alt=""><div>${p.code}<small>${p.name}</small><small>${money(p.price)}</small></div><button data-r="${p.code}">✕</button></div>`).join(''):'<div style="color:#777">Vacía</div>')+
     `<div class="pf"><span>Total</span><b>${money(total)}</b></div>`+
     (items.length?`<button class="ch" id="cp" style="margin-top:18px">Pedir por WhatsApp</button>`:'');
+  $('#bx').onclick=()=>togglePanel('bp');
   document.querySelectorAll('[data-r]').forEach(b=>b.onclick=()=>{bag=bag.filter(c=>c!==b.dataset.r);$('#bn').textContent=bag.length;paintBag();if(cur&&mode==='detail')fill()});
   const cp=$('#cp');
   if(cp)cp.onclick=()=>{
@@ -485,10 +493,12 @@ function paintBag(){
 }
 
 function togglePanel(id){
+  if(id==='bp'&&fs&&!$('#bp').classList.contains('on'))fsOn(false);
   const other=id==='fp'?'bp':'fp';
   $('#'+other).classList.remove('on');
   $('#'+id).classList.toggle('on');
   $('#plus').classList.toggle('on',$('#fp').classList.contains('on'));
+  document.body.classList.toggle('bo',$('#bp').classList.contains('on'));
   if(id==='bp')paintBag();
 }
 function viewReset(){if(mode==='detail')close()}
