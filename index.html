@@ -15,7 +15,7 @@ html,body{width:100vw;height:100vh;height:100dvh;overflow:hidden;background:#fff
 body{font:400 12px/1.5 'IBM Plex Mono',ui-monospace,Menlo,monospace;text-transform:uppercase;letter-spacing:.06em;user-select:none;-webkit-user-select:none}
 button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-transform:inherit;letter-spacing:inherit}
 img{display:block;-webkit-user-drag:none}
-@media(hover:hover){body,button{cursor:none}}
+@media(hover:hover){*,*::before,*::after{cursor:none!important}}
 
 #load{position:fixed;inset:0;z-index:200;background:#fff;display:grid;place-items:center;clip-path:inset(0)}
 #load .w{display:flex;overflow:hidden;font-weight:500;font-size:clamp(28px,6vw,84px);letter-spacing:.12em;padding:0 .1em}
@@ -36,13 +36,15 @@ body.ready .hd>*{opacity:1;transform:none}
 body.ready .hd>:nth-child(2){transition-delay:.15s}
 body.ready .hd>:nth-child(3){transition-delay:.3s}
 .hl{display:flex;align-items:center;gap:18px;justify-self:start}
-#plus{width:28px;height:28px;position:relative}
-#plus::before,#plus::after{content:"";position:absolute;left:3px;right:3px;top:13px;height:2px;background:var(--k);transition:transform .6s var(--o)}
-#plus::after{transform:rotate(90deg)}
-#plus.on::before{transform:rotate(45deg)}
-#plus.on::after{transform:rotate(-45deg)}
+.hr{justify-self:end;display:flex;align-items:center;gap:18px}
+#plus{width:28px;height:28px;position:relative;background:linear-gradient(var(--k),var(--k)) center/22px 2px no-repeat;transition:background-size .3s}
+#plus::before,#plus::after{content:"";position:absolute;left:3px;right:3px;top:8px;height:2px;background:var(--k);transition:transform .6s var(--o),top .6s var(--o)}
+#plus::after{top:18px}
+#plus.on{background-size:0 2px}
+#plus.on::before{top:13px;transform:rotate(45deg)}
+#plus.on::after{top:13px;transform:rotate(-45deg)}
 .brand{font-weight:600;letter-spacing:.16em}
-#bagb{justify-self:end;display:flex;gap:10px;align-items:center;padding:6px 0}
+#bagb{display:flex;gap:10px;align-items:center;padding:6px 0}
 #bagb svg{width:20px;height:20px;stroke:var(--k);fill:none;stroke-width:1.6}
 #bn{display:inline-block;min-width:1ch}
 #bn.bump{animation:bump .6s var(--o)}
@@ -80,14 +82,15 @@ body.ready .ft>*{opacity:1;transform:none;transition-delay:.4s}
 @keyframes roll{from{transform:translateY(110%)}}
 
 .pnl{position:fixed;top:0;bottom:0;z-index:65;background:#fff;padding:92px 24px 24px;overflow:hidden;visibility:hidden}
-#fp{left:0;width:min(440px,100vw);clip-path:circle(0 at 34px 32px);transition:clip-path .9s var(--e),visibility 0s .9s;border-right:1px solid var(--k)}
-#fp.on{clip-path:circle(160vmax at 34px 32px);visibility:visible;transition:clip-path 1s var(--e)}
-#bp{right:0;width:min(420px,100vw);transform:translateX(100%);transition:transform .9s var(--e),visibility 0s .9s;border-left:1px solid var(--k)}
-#bp.on{transform:none;visibility:visible;transition:transform .9s var(--e)}
+#fp{right:0;width:min(440px,100vw);clip-path:circle(0 at calc(100% - 90px) 32px);transition:clip-path .9s var(--e),visibility 0s .9s;border-left:1px solid var(--k)}
+#fp.on{clip-path:circle(160vmax at calc(100% - 90px) 32px);visibility:visible;transition:clip-path 1s var(--e)}
+#bp{right:0;width:min(420px,100vw);clip-path:circle(0 at calc(100% - 40px) 32px);transition:clip-path .9s var(--e),visibility 0s .9s;border-left:1px solid var(--k)}
+#bp.on{clip-path:circle(160vmax at calc(100% - 40px) 32px);visibility:visible;transition:clip-path 1s var(--e)}
 .pnl h4{font-weight:500;margin:0 0 12px;color:#777}
 .grp{margin-bottom:26px;opacity:0;transform:translateY(24px);transition:opacity .6s,transform .8s var(--o)}
 .on .grp{opacity:1;transform:none;transition-delay:calc(var(--i)*90ms + 300ms)}
 .ch{border:1px solid var(--k);padding:7px 12px;margin:0 8px 8px 0;transition:background .25s,color .25s}
+a.ch{display:inline-block;color:inherit;text-decoration:none}
 .ch.on,.ch:hover{background:var(--k);color:#fff}
 .sw{width:24px;height:24px;border-radius:50%;border:1px solid var(--k);margin:0 10px 10px 0;display:inline-block;vertical-align:middle;transition:transform .35s var(--o),outline-offset .35s}
 .sw:hover{transform:scale(1.25)}
@@ -98,7 +101,7 @@ body.ready .ft>*{opacity:1;transform:none;transition-delay:.4s}
 .bic svg{width:20px;height:20px;stroke:var(--k);fill:none;stroke-width:1.6}
 #bx{width:40px;height:40px;margin-right:-10px;font-size:18px;display:grid;place-items:center;transition:transform .6s var(--o)}
 #bx:hover{transform:rotate(90deg)}
-body.bo #bagb{opacity:0;pointer-events:none}
+body.bo .hr{opacity:0;pointer-events:none}
 .bi{display:grid;grid-template-columns:64px 1fr auto;gap:14px;align-items:center;padding:12px 0;border-bottom:1px solid #e6e6e6;animation:bi .8s var(--o) both}
 .bi img{width:64px;height:64px;object-fit:contain}
 .bi small{display:block;color:#777}
@@ -146,8 +149,11 @@ body.bo #bagb{opacity:0;pointer-events:none}
 #hero.zm{cursor:zoom-out}
 #hero.zm img{transform:scale(2.4);transform-origin:var(--ox,50%) var(--oy,50%)}
 #detail.fs #hero{z-index:12;cursor:zoom-out}
-#detail.fs.sh .dl,#detail.fs.sh #thumbs,#detail.fs.sh #dx{opacity:0;pointer-events:none;transition:opacity .4s}
-#fx{position:fixed;z-index:13;top:22px;right:24px;border-bottom:1px solid var(--k);padding:2px 0;opacity:0;pointer-events:none;transition:opacity .5s}
+#detail.fs.sh .dl,#detail.fs.sh #thumbs{opacity:0;pointer-events:none;transition:opacity .4s}
+#back{display:none;width:28px;height:28px;place-items:center}
+#back svg{width:22px;height:22px;stroke:var(--k);fill:none;stroke-width:1.6}
+body:has(#detail.sh) #back{display:grid}
+#fx{position:fixed;z-index:13;top:12px;left:12px;width:40px;height:40px;font-size:20px;display:grid;place-items:center;opacity:0;pointer-events:none;transition:opacity .5s}
 #detail.fs.sh #fx{opacity:1;pointer-events:auto;transition:opacity .8s .6s}
 #detail.fs.sh #gc{left:0;width:100%;bottom:26px;z-index:13;display:block;top:auto}
 body.fs .hd{opacity:0;pointer-events:none;transition:opacity .4s}
@@ -157,8 +163,6 @@ body.fs .hd{opacity:0;pointer-events:none;transition:opacity .4s}
 #thumbs img.a,#thumbs img:hover{opacity:1;transform:scale(1.18)}
 #gc{position:absolute;z-index:5;left:0;width:50%;bottom:28px;text-align:center;color:#777;opacity:0;transition:opacity .8s 1s}
 #detail.sh #gc{opacity:1}
-#dx{position:absolute;z-index:5;right:24px;bottom:22px;border-bottom:1px solid var(--k);padding:2px 0;opacity:0;transition:opacity .8s .9s}
-#detail.sh #dx{opacity:1}
 .fly{position:fixed;width:120px;height:160px;object-fit:contain;z-index:90;pointer-events:none}
 
 @media(max-width:760px){
@@ -169,7 +173,6 @@ body.fs .hd{opacity:0;pointer-events:none;transition:opacity .4s}
 .pn p{font-size:12.5px;line-height:1.55}
 .pr{font-size:19px;padding-top:4px}
 #add{padding:14px 18px}
-#dx{top:72px;bottom:auto;right:20px}
 #thumbs{left:20px;right:20px;top:auto;bottom:calc(58% + 6px);flex-direction:row;transform:none;justify-content:center;gap:12px}
 #thumbs img{width:34px;height:34px}
 #gc{width:100%;bottom:auto;top:calc(42% - 20px);display:none}
@@ -185,9 +188,9 @@ body.bo .hd{opacity:0;pointer-events:none}
 <div id="cur"></div>
 
 <header class="hd">
-  <div class="hl"><button id="plus" aria-label="Filtros"></button><span class="brand">LP WARDROBE</span></div>
+  <div class="hl"><button id="back" aria-label="Volver"><svg viewBox="0 0 24 24"><path d="M20 12H4M10 6l-6 6 6 6"/></svg></button><span class="brand">LP WARDROBE</span></div>
   <button id="idx"><span>Grid</span> / <span>Carrusel</span></button>
-  <button id="bagb" aria-label="Bolsa"><svg viewBox="0 0 24 24"><path d="M5 8h14l-1 12H6zM9 8V6a3 3 0 0 1 6 0v2"/></svg><span id="bn">0</span></button>
+  <div class="hr"><button id="plus" aria-label="Filtros"></button><button id="bagb" aria-label="Bolsa"><svg viewBox="0 0 24 24"><path d="M5 8h14l-1 12H6zM9 8V6a3 3 0 0 1 6 0v2"/></svg><span id="bn">0</span></button></div>
 </header>
 
 <div id="world"><div id="ghosts"></div><div id="stage"></div><div id="empty">Sin resultados</div></div>
@@ -209,8 +212,7 @@ body.bo .hd{opacity:0;pointer-events:none}
   <div id="hero"></div>
   <div id="thumbs"></div>
   <div id="gc"></div>
-  <button id="dx">Cerrar ✕</button>
-  <button id="fx">Cerrar ✕</button>
+  <button id="fx" aria-label="Cerrar">✕</button>
 </section>
 
 <script>
@@ -366,7 +368,7 @@ addEventListener('keydown',e=>{
 });
 
 function esc(){
-  if(fs)fsOn(false);
+  if(fs)fxBack();
   else if(mode==='detail')close();
   else if(mode==='stage'&&!$('#fp').classList.contains('on')&&!$('#bp').classList.contains('on'))toggleGrid();
   else if($('#fp').classList.contains('on'))togglePanel('fp');
@@ -446,7 +448,7 @@ function close(){
     D.classList.remove('on');mode=origin;
   });
 }
-$('#dx').onclick=close;
+$('#back').onclick=close;
 addEventListener('resize',()=>{if(mode==='detail')setRect(hero,fs?{left:0,top:0,width:innerWidth,height:innerHeight}:slot.getBoundingClientRect())});
 let fs=false,swiped=false;
 function fsOn(on){
@@ -461,7 +463,8 @@ hero.onclick=e=>{
   zoomAt(e);hero.classList.toggle('zm');
 };
 hero.addEventListener('pointermove',e=>{if(fs&&hero.classList.contains('zm'))zoomAt(e)});
-$('#fx').onclick=()=>fsOn(false);
+const fxBack=()=>hero.classList.contains('zm')?hero.classList.remove('zm'):fsOn(false);
+$('#fx').onclick=fxBack;
 
 function add(){
   if(bag.includes(cur.code))return togglePanel('bp');
@@ -482,14 +485,9 @@ function paintBag(){
   $('#bp').innerHTML=`<div class="bh"><span class="bic"><svg viewBox="0 0 24 24"><path d="M5 8h14l-1 12H6zM9 8V6a3 3 0 0 1 6 0v2"/></svg><b>${bag.length}</b></span><button id="bx" aria-label="Cerrar">✕</button></div><h4>Bolsa</h4>`+
     (items.length?items.map((p,i)=>`<div class="bi" style="animation-delay:${i*80}ms"><img src="${src(p.imgs[0])}" alt=""><div>${p.code}<small>${p.name}</small><small>${money(p.price)}</small></div><button data-r="${p.code}">✕</button></div>`).join(''):'<div style="color:#777">Vacía</div>')+
     `<div class="pf"><span>Total</span><b>${money(total)}</b></div>`+
-    (items.length?`<button class="ch" id="cp" style="margin-top:18px">Pedir por WhatsApp</button>`:'');
+    (items.length?`<a class="ch" id="cp" style="margin-top:18px" target="_blank" rel="noopener" href="https://wa.me/5493518007953?text=${encodeURIComponent('Hola! Quiero hacer este pedido en LP Wardrobe:\n\n'+items.map(p=>`• ${p.code} — ${p.name} (${p.color}) — ${money(p.price)}`).join('\n')+`\n\nTotal: ${money(total)}`)}">Pedir por WhatsApp</a>`:'');
   $('#bx').onclick=()=>togglePanel('bp');
   document.querySelectorAll('[data-r]').forEach(b=>b.onclick=()=>{bag=bag.filter(c=>c!==b.dataset.r);$('#bn').textContent=bag.length;paintBag();if(cur&&mode==='detail')fill()});
-  const cp=$('#cp');
-  if(cp)cp.onclick=()=>{
-    const t='Hola! Quiero hacer este pedido en LP Wardrobe:\n\n'+items.map(p=>`• ${p.code} — ${p.name} (${p.color}) — ${money(p.price)}`).join('\n')+`\n\nTotal: ${money(total)}`;
-    window.open('https://wa.me/5493518007953?text='+encodeURIComponent(t),'_blank','noopener');
-  };
 }
 
 function togglePanel(id){
