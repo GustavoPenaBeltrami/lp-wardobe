@@ -26,6 +26,15 @@ img{display:block;-webkit-user-drag:none}
 #lb{position:absolute;left:0;bottom:0;height:2px;background:var(--k);width:100%;transform:scaleX(0);transform-origin:left}
 @keyframes up{to{transform:none}}
 
+#pop{position:fixed;z-index:60;left:50%;top:50%;width:min(86vw,380px);margin:-120px 0 0 -190px;background:#0a0a0a;color:#fff;padding:28px 24px 26px;text-align:center;touch-action:none;cursor:grab;opacity:0;transform:translate(var(--x,0),var(--y,0));scale:.6;rotate:-6deg;transition:opacity .5s,scale .8s var(--o),rotate .8s var(--o)}
+#pop.on{opacity:1;scale:1;rotate:0deg}
+#pop.dr{cursor:grabbing}
+#pop.x{opacity:0;scale:.7;rotate:8deg;transition:opacity .4s,scale .5s var(--e),rotate .5s var(--e)}
+#pop b{display:block;font-weight:600;font-size:clamp(40px,12vw,58px);line-height:.95;white-space:nowrap;letter-spacing:-.03em;margin-top:18px}
+#pop em{display:block;font-style:normal;font-weight:500;font-size:clamp(16px,5vw,22px);letter-spacing:.12em;margin-top:10px}
+#pop small{display:block;font-size:11px;color:#bbb}
+#pop button{position:absolute;right:6px;top:6px;width:36px;height:36px;font-size:16px;color:#fff}
+@media(max-width:420px){#pop{margin-left:calc(min(86vw,380px)/-2)}}
 #cur{position:fixed;left:0;top:0;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;background:#fff;mix-blend-mode:difference;z-index:300;pointer-events:none;transition:width .35s var(--o),height .35s var(--o),margin .35s var(--o)}
 #cur.b{width:64px;height:64px;margin:-32px 0 0 -32px}
 @media(hover:none){#cur{display:none}}
@@ -56,6 +65,8 @@ body.ready .hd>:nth-child(3){transition-delay:.3s}
 .gh{position:absolute;left:50%;top:46%;font-weight:600;font-size:clamp(90px,26vw,420px);line-height:1;letter-spacing:-.04em;color:#f1f1f1;white-space:nowrap;will-change:transform,opacity}
 #stage{position:absolute;inset:0;perspective:1500px;perspective-origin:50% 45%}
 .it{position:absolute;left:50%;top:50%;height:min(62vh,64vw*1.25);will-change:transform,opacity;cursor:pointer}
+.it::after,.cell .im::after,#hero::after{content:'10% OFF';position:absolute;right:0;bottom:0;z-index:2;padding:4px 8px;background:var(--k);color:#fff;font-size:10px;font-weight:500;letter-spacing:.1em;line-height:1.4;pointer-events:none}
+.pr s{color:#777;font-size:.6em;font-weight:400;margin-right:10px}
 .it img{height:100%;width:auto;max-width:78vw;object-fit:contain;pointer-events:none}
 .hid{opacity:0!important}
 #grid.z{opacity:0;transform:scale(1.18);filter:blur(10px)}
@@ -186,6 +197,7 @@ body.bo .hd{opacity:0;pointer-events:none}
 <body>
 <div id="load"><div class="w" id="lw"></div><div id="lc">000</div><div id="lb"></div></div>
 <div id="cur"></div>
+<div id="pop"><button aria-label="Cerrar">✕</button><small>Todos los precios son negociables</small><b>10% OFF<em>lanzamiento</em></b></div>
 
 <header class="hd">
   <div class="hl"><button id="back" aria-label="Volver"><svg viewBox="0 0 24 24"><path d="M20 12H4M10 6l-6 6 6 6"/></svg></button><span class="brand">LP WARDROBE</span></div>
@@ -217,18 +229,19 @@ body.bo .hd{opacity:0;pointer-events:none}
 
 <script>
 const P=[
-{code:'SD-01',name:'Sudadera fleece con capucha',brand:'Columbia',cat:'Sudadera',color:'Azul',hex:'#1f3a6b',price:50000,desc:'Sudadera de tejido técnico fleece/polar con capucha. Liviana, abrigada y de caída holgada. Logo bordado en el pecho y estampa en la manga.',imgs:['azul-1','azul-2','azul-3','azul-4','azul-tag']},
-{code:'CP-01',name:'Chaqueta buzo polar con cremallera',brand:'Columbia',cat:'Chaqueta polar',color:'Gris oscuro',hex:'#4b504b',price:65000,desc:'Chaqueta buzo de polar con cierre frontal y bolsillo en el pecho. Cálida, suave y resistente al uso diario.',imgs:['grisoscuro-4','grisoscuro-1','grisoscuro-2','grisoscuro-3','grisoscuro-tag']},
-{code:'CP-02',name:'Chaqueta buzo polar con cremallera',brand:'Columbia',cat:'Chaqueta polar',color:'Gris oscuro',hex:'#3d433f',price:65000,desc:'Segunda pieza del modelo polar con cremallera. Mismo corte y abrigo, tono grafito ligeramente más profundo.',imgs:['grisoscuro2-1','grisoscuro2-6','grisoscuro2-2','grisoscuro2-3','grisoscuro2-4','grisoscuro2-5']},
-{code:'RV-01',name:'Campera rompeviento impermeable',brand:'Columbia',cat:'Rompevientos',color:'Verde',hex:'#1f8a2e',price:55000,desc:'Campera rompeviento e impermeable de mujer con capucha. Verde intenso con paneles blancos. Ideal para lluvia y montaña.',imgs:['verdeblanco-4','verdeblanco-1','verdeblanco-2','verdeblanco-3','verdeblanco-tag']},
-{code:'CP-03',name:'Chaqueta buzo Steens Mountain',brand:'Columbia',cat:'Chaqueta polar',color:'Negro',hex:'#101010',price:70000,desc:'Clásico Steens Mountain en polar negro. Cuello alto, tejido denso y mucho abrigo sin peso.',imgs:['negro-4','negro-1','negro-2','negro-3','negro-5','negro-tag']},
-{code:'SS-01',name:'Chaqueta Lago softshell',brand:'Columbia',cat:'Softshell',color:'Gris',hex:'#5b6770',price:70000,desc:'Chaqueta softshell Lago con cierre completo. Corta el viento, repele el agua liviana y se mueve con vos.',imgs:['gris-1','gris-2','gris-3','gris-4','gris-5','gris-6','gris-tag']},
-{code:'CP-04',name:'Chaqueta Trek Sherpa',brand:'Columbia',cat:'Chaqueta polar',color:'Rosa',hex:'#c9a0e0',price:55000,desc:'Chaqueta Trek con felpa sherpa de mujer. Bloques en marino, lila y bordó con cierre corto en el cuello.',imgs:['rosa-3','rosa-1','rosa-2','rosa-4','rosa-tag']},
-{code:'RV-02',name:'Campera rompeviento',brand:'Columbia',cat:'Rompevientos',color:'Blanco',hex:'#f2f2f2',price:55000,desc:'Rompeviento liviano en blanco y azul marino con cierre rojo y bolsillo canguro. Se guarda en cualquier mochila.',imgs:['blanca-1','blanca-2','blanca-3','blanca-4','blanca-tag']},
-{code:'RV-03',name:'Campera impermeable verde agua',brand:'Otros',cat:'Rompevientos',color:'Verde agua',hex:'#8fe0a0',price:25000,desc:'Campera impermeable con capucha en verde agua. Es una réplica, no una prenda original, y su precio lo refleja.',imgs:['verdeagua-1','verdeagua-2','verdeagua-3','verdeagua-4','verdeagua-5','verdeagua-tag']}
+{code:'SD-01',name:'Sudadera fleece con capucha',brand:'Columbia',cat:'Sudadera',color:'Azul',hex:'#1f3a6b',price:50000,size:'4X',desc:'Sudadera de tejido técnico fleece/polar con capucha. Liviana, abrigada y de caída holgada. Logo bordado en el pecho y estampa en la manga.',imgs:['azul-1','azul-2','azul-3','azul-4','azul-tag']},
+{code:'CP-01',name:'Chaqueta buzo polar con cremallera',brand:'Columbia',cat:'Chaqueta polar',color:'Gris oscuro',hex:'#4b504b',price:70000,size:'XL',desc:'Chaqueta buzo de polar con cierre frontal y bolsillo en el pecho. Cálida, suave y resistente al uso diario.',imgs:['grisoscuro-4','grisoscuro-1','grisoscuro-2','grisoscuro-3','grisoscuro-tag']},
+{code:'CP-02',name:'Chaqueta buzo polar con cremallera',brand:'Columbia',cat:'Chaqueta polar',color:'Gris oscuro',hex:'#3d433f',price:70000,desc:'Segunda pieza del modelo polar con cremallera. Mismo corte y abrigo, tono grafito ligeramente más profundo.',imgs:['grisoscuro2-1','grisoscuro2-6','grisoscuro2-2','grisoscuro2-3','grisoscuro2-4','grisoscuro2-5']},
+{code:'RV-01',name:'Campera rompeviento impermeable',brand:'Columbia',cat:'Rompevientos',color:'Verde',hex:'#1f8a2e',price:65000,size:'S',desc:'Campera rompeviento e impermeable de mujer con capucha. Verde intenso con paneles blancos. Ideal para lluvia y montaña.',imgs:['verdeblanco-4','verdeblanco-1','verdeblanco-2','verdeblanco-3','verdeblanco-tag']},
+{code:'CP-03',name:'Chaqueta buzo Steens Mountain',brand:'Columbia',cat:'Chaqueta polar',color:'Negro',hex:'#101010',price:70000,size:'XXL',desc:'Clásico Steens Mountain en polar negro. Cuello alto, tejido denso y mucho abrigo sin peso.',imgs:['negro-4','negro-1','negro-2','negro-3','negro-5','negro-tag']},
+{code:'SS-01',name:'Chaqueta Lago softshell',brand:'Columbia',cat:'Softshell',color:'Gris',hex:'#5b6770',price:70000,size:'XXL',desc:'Chaqueta softshell Lago con cierre completo. Corta el viento, repele el agua liviana y se mueve con vos.',imgs:['gris-1','gris-2','gris-3','gris-4','gris-5','gris-6','gris-tag']},
+{code:'CP-04',name:'Chaqueta Trek Sherpa',brand:'Columbia',cat:'Chaqueta polar',color:'Rosa',hex:'#c9a0e0',price:60000,size:'M',desc:'Chaqueta Trek con felpa sherpa de mujer. Bloques en marino, lila y bordó con cierre corto en el cuello.',imgs:['rosa-3','rosa-1','rosa-2','rosa-4','rosa-tag']},
+{code:'RV-02',name:'Campera rompeviento',brand:'Columbia',cat:'Rompevientos',color:'Blanco',hex:'#f2f2f2',price:60000,size:'L',desc:'Rompeviento liviano en blanco y azul marino con cierre rojo y bolsillo canguro. Se guarda en cualquier mochila.',imgs:['blanca-1','blanca-2','blanca-3','blanca-4','blanca-tag']},
+{code:'RV-03',name:'Campera impermeable verde agua',brand:'Otros',cat:'Rompevientos',color:'Verde agua',hex:'#8fe0a0',price:38000,size:'S',desc:'Campera impermeable con capucha en verde agua. Es una réplica, no una prenda original, y su precio lo refleja.',imgs:['verdeagua-1','verdeagua-2','verdeagua-3','verdeagua-4','verdeagua-5','verdeagua-tag']}
 ];
 const $=s=>document.querySelector(s);
 const E=(t,c,h)=>{const e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e};
+const fin=p=>Math.round(p.price*.9);
 const money=v=>`ARS ${v.toLocaleString('es-AR')} $`;
 const src=f=>`assets/img/${f}.webp`;
 const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
@@ -407,9 +420,9 @@ function fill(){
   $('#pn').innerHTML=
     `<div class="ln m" style="--i:0"><span>${p.code} — ${p.brand}</span></div>`+
     `<h2 class="ln" style="--i:1"><span>${p.name}</span></h2>`+
-    `<div class="ln m" style="--i:2"><span>${p.color} · ${p.cat}</span></div>`+
+    `<div class="ln m" style="--i:2"><span>${p.size?'Talle '+p.size+' · ':''}${p.color} · ${p.cat}</span></div>`+
     `<p class="ln" style="--i:3"><span>${p.desc}</span></p>`+
-    `<div class="pr ln" style="--i:4"><span>${money(p.price)}</span></div>`+
+    `<div class="pr ln" style="--i:4"><span><s>${money(p.price)}</s>${money(fin(p))}</span></div>`+
     `<div class="ln bt" style="--i:5"><span><button id="add" class="${inb?'d':''}"><b id="al">${inb?'En la bolsa':'Agregar a la bolsa'}</b><i></i></button></span></div>`;
   $('#add').onclick=add;
   const th=$('#thumbs');th.innerHTML='';
@@ -481,11 +494,11 @@ function add(){
 function bump(){const b=$('#bn');b.textContent=bag.length;b.classList.remove('bump');void b.offsetWidth;b.classList.add('bump')}
 function paintBag(){
   const items=bag.map(c=>P.find(p=>p.code===c));
-  const total=items.reduce((s,p)=>s+p.price,0);
+  const total=items.reduce((s,p)=>s+fin(p),0);
   $('#bp').innerHTML=`<div class="bh"><span class="bic"><svg viewBox="0 0 24 24"><path d="M5 8h14l-1 12H6zM9 8V6a3 3 0 0 1 6 0v2"/></svg><b>${bag.length}</b></span><button id="bx" aria-label="Cerrar">✕</button></div><h4>Bolsa</h4>`+
-    (items.length?items.map((p,i)=>`<div class="bi" style="animation-delay:${i*80}ms"><img src="${src(p.imgs[0])}" alt=""><div>${p.code}<small>${p.name}</small><small>${money(p.price)}</small></div><button data-r="${p.code}">✕</button></div>`).join(''):'<div style="color:#777">Vacía</div>')+
+    (items.length?items.map((p,i)=>`<div class="bi" style="animation-delay:${i*80}ms"><img src="${src(p.imgs[0])}" alt=""><div>${p.code}<small>${p.name}</small><small>${money(fin(p))}</small></div><button data-r="${p.code}">✕</button></div>`).join(''):'<div style="color:#777">Vacía</div>')+
     `<div class="pf"><span>Total</span><b>${money(total)}</b></div>`+
-    (items.length?`<a class="ch" id="cp" style="margin-top:18px" target="_blank" rel="noopener" href="https://wa.me/5493518007953?text=${encodeURIComponent('Hola! Quiero hacer este pedido en LP Wardrobe:\n\n'+items.map(p=>`• ${p.code} — ${p.name} (${p.color}) — ${money(p.price)}`).join('\n')+`\n\nTotal: ${money(total)}`)}">Pedir por WhatsApp</a>`:'');
+    (items.length?`<a class="ch" id="cp" style="margin-top:18px" target="_blank" rel="noopener" href="https://wa.me/5493518007953?text=${encodeURIComponent('Hola! Quiero hacer este pedido en LP Wardrobe:\n\n'+items.map(p=>`• ${p.code} — ${p.name} (${p.color}${p.size?', talle '+p.size:''}) — ${money(fin(p))} (10% OFF)`).join('\n')+`\n\nTotal: ${money(total)}`)}">Pedir por WhatsApp</a>`:'');
   $('#bx').onclick=()=>togglePanel('bp');
   document.querySelectorAll('[data-r]').forEach(b=>b.onclick=()=>{bag=bag.filter(c=>c!==b.dataset.r);$('#bn').textContent=bag.length;paintBag();if(cur&&mode==='detail')fill()});
 }
@@ -597,6 +610,33 @@ $('#idx').onclick=toggleGrid;
   paintGrid();mode='grid';hov=0;
   idxLbl();
   requestAnimationFrame(()=>$('#grid').classList.add('on'));
+  const pop=$('#pop');let px=0,py=0,sx,sy;
+  pop.style.marginLeft=-pop.offsetWidth/2+'px';pop.style.marginTop=-pop.offsetHeight/2+'px';
+  const mv=()=>{pop.style.setProperty('--x',px+'px');pop.style.setProperty('--y',py+'px')};
+  let vx=0,vy=0,raf=0,lt=0,drag=0;
+  const lim=()=>[(innerWidth-pop.offsetWidth)/2,(innerHeight-pop.offsetHeight)/2];
+  const fly=t=>{
+    const dt=Math.min((t-lt)/16.67,3);lt=t;
+    const[mx,my]=lim();
+    px+=vx*dt;py+=vy*dt;
+    if(px>mx){px=mx;vx=-vx*.8}else if(px<-mx){px=-mx;vx=-vx*.8}
+    if(py>my){py=my;vy=-vy*.8}else if(py<-my){py=-my;vy=-vy*.8}
+    const f=Math.pow(.985,dt);vx*=f;vy*=f;mv();
+    if(Math.hypot(vx,vy)>.05)raf=requestAnimationFrame(fly);else{raf=0;pop.classList.remove('dr')}
+  };
+  let hx=[];
+  pop.onpointerdown=e=>{e.stopPropagation();if(e.target.tagName==='BUTTON')return;cancelAnimationFrame(raf);raf=0;vx=vy=0;drag=1;hx=[];sx=e.clientX-px;sy=e.clientY-py;pop.classList.add('dr');pop.setPointerCapture(e.pointerId)};
+  pop.onpointermove=e=>{if(!drag)return;px=e.clientX-sx;py=e.clientY-sy;const n=performance.now();hx.push([n,px,py]);hx=hx.filter(h=>n-h[0]<100);mv()};
+  pop.onpointerup=pop.onpointercancel=()=>{
+    if(!drag)return;drag=0;
+    const n=performance.now(),h=hx.filter(q=>n-q[0]<100);
+    if(h.length>1){const f=h[0],l=h[h.length-1],d=Math.max(l[0]-f[0],1)/16.67;vx=(l[1]-f[1])/d;vy=(l[2]-f[2])/d}
+    lt=n;raf=requestAnimationFrame(fly);
+  };
+  pop.onwheel=e=>e.stopPropagation();
+  pop.querySelector('button').onclick=e=>{e.stopPropagation();cancelAnimationFrame(raf);pop.classList.add('x');setTimeout(()=>pop.remove(),500)};
+  const V0=[40,60],v=V0[0]+Math.random()*(V0[1]-V0[0]),a=Math.random()*2*Math.PI;
+  vx=v*Math.cos(a);vy=v*Math.sin(a);pop.classList.add('on','dr');lt=performance.now();raf=requestAnimationFrame(fly);
 })();
 requestAnimationFrame(tick);
 </script>
