@@ -476,6 +476,13 @@ hero.onclick=e=>{
   zoomAt(e);hero.classList.toggle('zm');
 };
 hero.addEventListener('pointermove',e=>{if(fs&&hero.classList.contains('zm'))zoomAt(e)});
+let fl=null;
+addEventListener('pointerdown',e=>{fl=e.pointerType!=='mouse'&&fs&&hero.classList.contains('zm')&&e.target.closest('#hero')?[e.clientX,e.clientY,performance.now()]:null});
+addEventListener('pointerup',e=>{
+  if(!fl)return;const[x,y,t]=fl;fl=null;
+  const d=Math.hypot(e.clientX-x,e.clientY-y),dt=performance.now()-t;
+  if(d>80&&dt<350&&d/dt>.8){swiped=true;setTimeout(()=>swiped=false,120);hero.classList.remove('zm')}
+});
 const fxBack=()=>hero.classList.contains('zm')?hero.classList.remove('zm'):fsOn(false);
 $('#fx').onclick=fxBack;
 
